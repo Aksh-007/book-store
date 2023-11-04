@@ -5,7 +5,7 @@ export const home = async (req, res) => {
 }
 
 /******************************************************
- * @SAVE
+ * @CREATE_Book
  * @route http://localhost:3000/api/v1/create
  * @description save book
  * @returns book Object
@@ -45,5 +45,53 @@ export const createBook = async (req, res) => {
     }
 }
 
+/******************************************************
+ * @GET_ALL_BOOKS
+ * @route http://localhost:3000/api/v1/getAllBooks
+ * @description controller is used to get all books from database
+ * @returns books object
+ ******************************************************/
+export const getAllBooks = async (req, res) => {
+    try {
+
+        const getAllBooks = await bookSchema.find();
+        res.status(200).json({
+            sucess: true,
+            message: `All Books Retrived Sucesfully`,
+            getAllBooks
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({
+            sucess: false,
+            message: error.message,
+        })
+    }
+}
 
 
+/******************************************************
+ * @GET_BOOK_BY_ID
+ * @route http://localhost:3000/api/v1/getBook
+ * @description controller is used to get single books from database
+ * @returns books object with single book
+ ******************************************************/
+export const getBookByID = async (req, res) => {
+    try {
+        const bookId = req.params.id;
+        const book = await bookSchema.findById(bookId);
+        if(!book) throw new Error(`No Book Found`)
+        res.status(200).json({
+            sucess:true,
+            message:`Book Found Sucesfully`,
+            book
+        })
+
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({
+            sucess: false,
+            message: error.message,
+        })
+    }
+}
