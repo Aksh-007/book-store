@@ -81,10 +81,7 @@ export const getBookByID = async (req, res) => {
         const bookId = req.params.id;
         const book = await bookSchema.findOne({ _id: bookId });
         if (!book) {
-            res.status(404).json({
-                sucess:false,
-                message: 'Book not found'
-            })
+            throw new Error("Book Not Found")
         }
         res.status(200).json({
             sucess: true,
@@ -97,7 +94,6 @@ export const getBookByID = async (req, res) => {
         res.status(400).json({
             sucess: false,
             message: error.message,
-            message: "Error in request"
         })
     }
 }
