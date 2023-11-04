@@ -72,15 +72,20 @@ export const getAllBooks = async (req, res) => {
 
 /******************************************************
  * @GET_BOOK_BY_ID
- * @route http://localhost:3000/api/v1/getBook
- * @description controller is used to get single books from database
+ * @route http://localhost:3000/api/v1/getBook/:id
+ * @description Api is used to Retrieve a book by its ID.
  * @returns books object with single book
  ******************************************************/
 export const getBookByID = async (req, res) => {
     try {
         const bookId = req.params.id;
-        const book = await bookSchema.findById({ _id: bookId });
-        if (!book) throw new Error(`No Book Found`)
+        const book = await bookSchema.findOne({ _id: bookId });
+        if (!book) {
+            res.status(404).json({
+                sucess:false,
+                message: 'Book not found'
+            })
+        }
         res.status(200).json({
             sucess: true,
             message: `Book Found Sucesfully`,
@@ -92,6 +97,7 @@ export const getBookByID = async (req, res) => {
         res.status(400).json({
             sucess: false,
             message: error.message,
+            message: "Error in request"
         })
     }
 }
