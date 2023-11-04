@@ -79,11 +79,11 @@ export const getAllBooks = async (req, res) => {
 export const getBookByID = async (req, res) => {
     try {
         const bookId = req.params.id;
-        const book = await bookSchema.findById(bookId);
-        if(!book) throw new Error(`No Book Found`)
+        const book = await bookSchema.findById({ _id: bookId });
+        if (!book) throw new Error(`No Book Found`)
         res.status(200).json({
-            sucess:true,
-            message:`Book Found Sucesfully`,
+            sucess: true,
+            message: `Book Found Sucesfully`,
             book
         })
 
