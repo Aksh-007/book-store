@@ -1,8 +1,10 @@
 import express from "express";
 import dotenv from "dotenv";
-dotenv.config();
-const app = express();
+import dbConnection from "./config/dbConnection.js"
 
+const app = express();
+dotenv.config();
+dbConnection();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
