@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import dbConnection from "./config/dbConnection.js"
-
+import router from "./router/book.router.js";
 const app = express();
 dotenv.config();
 dbConnection();
@@ -9,8 +9,7 @@ dbConnection();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
 
+// Book router middleware
+app.use('/api/v1', router)
 
-app.get('/', (req, res) => {
-    res.send(`<h1>App is working</h1>`)
-})
 export default app;
