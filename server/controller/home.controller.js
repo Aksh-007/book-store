@@ -139,3 +139,30 @@ export const updateBook = async (req, res) => {
         })
     }
 }
+
+
+/******************************************************
+ * @DELETE_BOOK_BY_ID
+ * @route http://localhost:3000/api/v1/deleteBook/:id
+ * @description Api is used to Delete a book by its ID.
+ * @returns Dleted books object 
+ ******************************************************/
+export const deleteBook = async (req, res) => {
+    try {
+        const bookId = req.params.id
+        if (!bookId) throw new Error(`Please Provide Id of book`);
+
+        const deletedBook = await bookSchema.findByIdAndDelete(bookId);
+        res.status(200).json({
+            sucess: true,
+            message: `Book with title "${deletedBook.title}" Deleted Sucessfully`,
+            deleteBook
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({
+            sucess: false,
+            message: error.message,
+        })
+    }
+}
