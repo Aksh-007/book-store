@@ -97,3 +97,45 @@ export const getBookByID = async (req, res) => {
         })
     }
 }
+
+
+/******************************************************
+ * @UPDATE_BOOK_BY_ID
+ * @route http://localhost:3000/api/v1/updateBook/:id
+ * @description Api is used to Update a book by its ID.
+ * @returns books object 
+ ******************************************************/
+export const updateBook = async (req, res) => {
+    try {
+        const bookId = req.params.id
+        const { title, author, publishYear } = req.body;
+
+
+        // error Handling
+        if (!bookId) throw new Error(`Please Enter Book ID`);
+
+        if (!title) throw new Error(`Please Enter title`);
+        if (!author) throw new Error(`Please Enter author`);
+        if (!publishYear) throw new Error(`Please Enter publishYear`);
+
+        // error handling if updated title already exist 
+        const updatedBookTitleExist = await bookSchema.findOne({ title })
+        if (updatedBookTitleExist) throw new Error(`This Title already exist `)
+
+        const updatedBook = await bookSchema.findByIdAndUpdate(bookId, { title, author, publishYear });
+        if (!updatedBook) throw new Error(`Book Not Updated`);
+
+        // sent response to frontend
+        res.status(200).json({
+            sucess: true,
+            message: `Book Updated succesfuly`,
+            updateBook
+        });
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({
+            sucess: false,
+            message: error.message
+        })
+    }
+}
